@@ -27,6 +27,44 @@ function App() {
     setAnalyzerNode(analyzer);
   }, []);
 
+  useEffect(() => {
+    if (source && analyzerNode && playState === 'play') {
+      const canvas = spectrumRef.current;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const canvasCtx = canvas.getContext('2d');
+      analyzerNode.fftSize = 16384;
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const bufferLength = analyzerNode.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      const barWidth = 1;
+
+      let barHeight;
+      let x = 0;
+
+      const renderFrame = () => {
+        requestAnimationFrame(renderFrame);
+
+        x = 0;
+
+        analyzerNode.getByteFrequencyData(dataArray);
+        canvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+        let bars = 128;
+
+        for (let i = 0; i < bars; i++) {
+          barHeight = dataArray[i];
+
+          canvasCtx.fillStyle = `rgba(255,255,255,0.8)`;
+          canvasCtx.fillRect(x, canvasHeight - barHeight, barWidth, barHeight);
+          x += barWidth + canvasWidth / bars;
+        }
+      };
+
+      renderFrame();
+    }
+  }, [playState]);
+
   const handleTogglePlay = () => {
     if (audioCtxRef.current.state === 'suspended') {
       audioCtxRef.current.resume();
