@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { FaRegPlayCircle, FaRegPauseCircle } from 'react-icons/fa';
 import logo from './logo.svg';
 import './App.css';
 
@@ -41,7 +42,7 @@ function App() {
       const barWidth = 1;
 
       let barHeight;
-      let x = 0;
+      let x;
 
       const renderFrame = () => {
         requestAnimationFrame(renderFrame);
@@ -63,6 +64,8 @@ function App() {
 
       renderFrame();
     }
+
+    // eslint-disable-next-line
   }, [playState]);
 
   const handleTogglePlay = () => {
@@ -109,9 +112,12 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 
-        <button type="button" onClick={handleTogglePlay}>
-          {playState === 'stop' && 'play'}
-          {playState === 'play' && 'stop'}
+        <button
+          type="button"
+          className={`App-toggle-play${playState === 'play' ? ' playing' : ''}`}
+          onClick={handleTogglePlay}
+        >
+          {playState === 'stop' ? <FaRegPlayCircle /> : <FaRegPauseCircle />}
         </button>
 
         <input
@@ -131,7 +137,7 @@ function App() {
           onEnded={handleEnded}
         />
 
-        <canvas className="spectrums" ref={spectrumRef} />
+        <canvas className="App-spectrums" ref={spectrumRef} />
       </header>
     </div>
   );
