@@ -70,7 +70,7 @@
 }
 
 .App-toggle-play.playing {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.5s ease;
   opacity: 0;
 }
 

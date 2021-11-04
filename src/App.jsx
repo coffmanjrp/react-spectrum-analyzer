@@ -56,8 +56,13 @@ function App() {
         for (let i = 0; i < bars; i++) {
           barHeight = dataArray[i];
 
-          canvasCtx.fillStyle = `rgba(255,255,255,0.8)`;
+          canvasCtx.fillStyle = `rgba(${
+            barHeight * Math.ceil(Math.random() * 1.1)
+          }, ${barHeight * Math.ceil(Math.random() * 1.1)}, ${
+            barHeight * Math.ceil(Math.random() * 1.1)
+          }, 0.8)`;
           canvasCtx.fillRect(x, canvasHeight - barHeight, barWidth, barHeight);
+
           x += barWidth + canvasWidth / bars;
         }
       };
