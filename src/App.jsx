@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaRegPlayCircle, FaRegPauseCircle } from 'react-icons/fa';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   const audioRef = useRef(null);
+  const movieRef = useRef(null);
   const timePositionRef = useRef(null);
   const spectrumRef = useRef(null);
 
@@ -81,11 +81,13 @@ function App() {
 
     if (playState === 'stop') {
       audioRef.current.play();
+      movieRef.current.play();
       setPlayState('play');
     }
 
     if (playState === 'play') {
       audioRef.current.pause();
+      movieRef.current.pause();
       setPlayState('stop');
     }
   };
@@ -114,8 +116,21 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <div className="App-container">
+        <div className="App-video-container">
+          <video
+            className="App-video"
+            aria-hidden={true}
+            playsinline={true}
+            autoplay={false}
+            muted={true}
+            loop={true}
+            poster="./image/poster.jpg"
+            ref={movieRef}
+          >
+            <source src="./movie/movie.webm" type="video/webm" />
+          </video>
+        </div>
 
         <button
           type="button"
@@ -127,6 +142,7 @@ function App() {
 
         <input
           type="range"
+          className="App-input-range"
           ref={timePositionRef}
           min={0}
           max={duration}
@@ -143,7 +159,7 @@ function App() {
         />
 
         <canvas className="App-spectrums" ref={spectrumRef} />
-      </header>
+      </div>
     </div>
   );
 }
